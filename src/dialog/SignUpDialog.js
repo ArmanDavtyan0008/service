@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const SignUpDialog = ({ open, onClose, handleOpenSignUp }) => {
+const SignUpDialog = ({ open, onClose, handleOpenSignUp, onSignInOpen }) => {
   const [showPass, setShowPass] = useState(false);
 
   const handleShowPassword = () => {
@@ -79,6 +79,19 @@ const SignUpDialog = ({ open, onClose, handleOpenSignUp }) => {
                 ),
               }}
             />
+            <Typography>
+              Already have an account?
+              <Button
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSignInOpen();
+                }}
+              >
+                {" "}
+                Sign in{" "}
+              </Button>
+            </Typography>
             <DialogActions>
               <Button
                 variant="contained"

@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-
 import {
   AppBar,
   Container,
   Toolbar,
   Typography,
-  createTheme,
   Button,
   Box,
   ThemeProvider,
 } from "@mui/material";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import { NavLink } from "react-router-dom";
-import SignUpDialog from "../../dialog/SignUpDialog";
-import SignInDialog from "../../dialog/SignInDialog";
+import Auth from "../Auth";
+import { navbar } from "../../constants/common";
+import { stylesSx, theme } from "./mui-styles";
 
 const Header = () => {
   const [activeLinkId, setActiveLinkId] = useState();
@@ -35,76 +34,15 @@ const Header = () => {
     setLoginDialogOpen(false);
   };
 
-  const checkIfActive = (id) => {
-    return activeLinkId === id;
-  };
-  const activateEl = (e) => {
-    setActiveLinkId(e.currentTarget.id);
-  };
-  const theme = createTheme({
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 15,
-            textTransform: "capitalize",
-          },
-        },
-        defaultProps: {
-          disableRipple: true,
-        },
-        variants: [
-          {
-            props: { variant: "navbar" },
-            style: {
-              color: "white",
-              "&:hover": {
-                background: "rgb(37, 47, 57)",
-              },
-              "&:active": {
-                background: "rgba(215, 182, 93, 0.3)",
-                color: "black",
-              },
-              "&.active-navbar-btn": {
-                background: "rgba(215, 182, 93, 0.8)",
-                color: "black",
-              },
-            },
-          },
-          {
-            props: { variant: "authentication" },
-            style: {
-              color: "#D7B65D",
-              border: "2px solid #F1B500",
-              "&:hover": {
-                background: "rgba(215, 182, 93, 0.3)",
-                borderColor: "transparent",
-              },
-            },
-          },
-        ],
-      },
-    },
-    typography: {
-      fontFamily: ["Quicksand", "Roboto", "sans-serif"].join(","),
-    },
-  });
+  const checkIfActive = (id) => activeLinkId === id;
+
+  const activateEl = (e) => setActiveLinkId(e.currentTarget.id);
 
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static" sx={{ backgroundColor: "#192026" }}>
         <Container maxWidth="xl">
-          <Toolbar
-            disableGutters
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "100px",
-              height: 80,
-              mb: "10px",
-            }}
-          >
+          <Toolbar disableGutters sx={stylesSx}>
             <NavLink
               to="/"
               className="navbar-link"
@@ -117,80 +55,30 @@ const Header = () => {
               </Typography>
             </NavLink>
             <Box sx={{ display: "flex", gap: 6, alignItems: "center" }}>
-              <NavLink to="/services" className="navbar-link">
-                <Button
-                  variant="navbar"
-                  id="services"
-                  onClick={activateEl}
-                  className={`${
-                    checkIfActive("services") ? "active-navbar-btn" : ""
-                  }`}
-                >
-                  <Typography variant="h5" noWrap>
-                    Services
-                  </Typography>
-                </Button>
-              </NavLink>
-              <NavLink to="/catalogue" className="navbar-link">
-                <Button
-                  variant="navbar"
-                  id="catalogue"
-                  onClick={activateEl}
-                  className={`${
-                    checkIfActive("catalogue") ? "active-navbar-btn" : ""
-                  }`}
-                >
-                  <Typography variant="h5" noWrap>
-                    Catalogue
-                  </Typography>
-                </Button>
-              </NavLink>
-              <NavLink to="/about" className="navbar-link">
-                <Button
-                  variant="navbar"
-                  id="btn3"
-                  onClick={activateEl}
-                  className={`${
-                    checkIfActive("btn3") ? "active-navbar-btn" : ""
-                  }`}
-                >
-                  <Typography variant="h5" noWrap>
-                    About Us
-                  </Typography>
-                </Button>
-              </NavLink>
-              <NavLink to="/contact-us" className="navbar-link">
-                <Button
-                  variant="navbar"
-                  id="btn4"
-                  onClick={activateEl}
-                  className={`${
-                    checkIfActive("btn4") ? "active-navbar-btn" : ""
-                  }`}
-                >
-                  <Typography variant="h5" noWrap>
-                    Contact Us
-                  </Typography>
-                </Button>
-              </NavLink>
+              {navbar.map((nav) => (
+                <NavLink to={`/${nav}`} className="navbar-link">
+                  <Button
+                    variant="navbar"
+                    id={`/${nav}`}
+                    onClick={activateEl}
+                    className={`${
+                      checkIfActive(`/${nav}`) ? "active-navbar-btn" : ""
+                    }`}
+                  >
+                    <Typography variant="h5" noWrap>
+                      {nav}
+                    </Typography>
+                  </Button>
+                </NavLink>
+              ))}
             </Box>
-            <Box sx={{ display: "flex", gap: 3 }}>
-              <Typography variant="h6" noWrap>
-                <SignInDialog
-                  handleOpenSignIn={handleOpenLogin}
-                  open={loginDialogOpen}
-                  onClose={onClose}
-                />
-              </Typography>
-
-              <Typography variant="h6" noWrap>
-                <SignUpDialog
-                  handleOpenSignUp={handleOpenSignUp}
-                  open={signUpDialogOpen}
-                  onClose={onClose}
-                />
-              </Typography>
-            </Box>
+            <Auth
+              handleOpenLogin={handleOpenLogin}
+              handleOpenSignUp={handleOpenSignUp}
+              loginDialogOpen={loginDialogOpen}
+              signUpDialogOpen={signUpDialogOpen}
+              onClose={onClose}
+            />
           </Toolbar>
         </Container>
       </AppBar>
