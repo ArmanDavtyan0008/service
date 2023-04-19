@@ -11,24 +11,45 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { Transition } from "./mui-style";
+import { reg } from "../constants/common";
 
 const SignUpDialog = ({ open, onClose, handleOpenSignUp, onSignInOpen }) => {
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [confPass, setConfPass] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [isValid, setValid] = useState(true);
 
   const handleShowPassword = () => {
     setShowPass(!showPass);
   };
 
+  useEffect(() => {
+    let id = setTimeout(() => {
+      if (!reg.test(pass) && pass) {
+        setValid(false);
+      } else {
+        setValid(true);
+      }
+    }, 500);
+    return () => {
+      setValid(true);
+      clearTimeout(id);
+    };
+  }, [pass]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (pass !== confPass || !isValid) return;
+  };
+
   return (
     <>
       <Button variant="authentication" onClick={handleOpenSignUp}>
-        <Typography variant="h6">Sign up</Typography>
+        Sign up
       </Button>
       <Dialog
         open={open}
@@ -37,13 +58,26 @@ const SignUpDialog = ({ open, onClose, handleOpenSignUp, onSignInOpen }) => {
         onClose={onClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <DialogTitle>Sign Up</DialogTitle>
           <DialogContent
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <TextField type="email" label="Email" required />
             <TextField
+              type="email"
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {!isValid && (
+              <Typography variant="caption" color="red">
+                not currently
+              </Typography>
+            )}
+            <TextField
+              value={pass}
+              onChange={(e) => setPass(e.target.value)}
               type={showPass ? "text" : "password"}
               label="Password"
               required
@@ -64,6 +98,8 @@ const SignUpDialog = ({ open, onClose, handleOpenSignUp, onSignInOpen }) => {
             <TextField
               type={showPass ? "text" : "password"}
               label="Confirm password"
+              value={confPass}
+              onChange={({ target }) => setConfPass(target.value)}
               required
               InputProps={{
                 endAdornment: (
@@ -81,23 +117,10 @@ const SignUpDialog = ({ open, onClose, handleOpenSignUp, onSignInOpen }) => {
             />
             <Typography>
               Already have an account?
-              <Button
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onSignInOpen();
-                }}
-              >
-                {" "}
-                Sign in{" "}
-              </Button>
+              <Button onClick={onSignInOpen}>Sign In</Button>
             </Typography>
             <DialogActions>
-              <Button
-                variant="contained"
-                type="submit"
-                onClick={(e) => e.preventDefault()}
-              >
+              <Button variant="contained" type="submit">
                 Sign Up
               </Button>
             </DialogActions>

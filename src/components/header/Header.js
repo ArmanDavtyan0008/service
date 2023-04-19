@@ -56,7 +56,7 @@ const Header = () => {
             </NavLink>
             <Box sx={{ display: "flex", gap: 6, alignItems: "center" }}>
               {navbar.map((nav) => (
-                <NavLink to={`/${nav}`} className="navbar-link">
+                <NavLink to={`/${nav}`} className="navbar-link" key={nav}>
                   <Button
                     variant="navbar"
                     id={`/${nav}`}

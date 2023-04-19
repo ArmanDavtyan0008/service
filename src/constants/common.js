@@ -1,6 +1,7 @@
 export const carColl = [
   {
     id: 1,
+    type: "sedan",
     brand: "Hyundai",
     name: "Ioniq",
     releaseYear: 2017,
@@ -9,6 +10,7 @@ export const carColl = [
   },
   {
     id: 2,
+    type: "jeep",
     brand: "Toyota",
     name: "camry",
     releaseYear: 2015,
@@ -17,6 +19,7 @@ export const carColl = [
   },
   {
     id: 3,
+    type: "jeep",
     brand: "Mercedes-Benz",
     name: "S-550",
     releaseYear: 2015,
@@ -25,6 +28,7 @@ export const carColl = [
   },
   {
     id: 4,
+    type: "sedan",
     brand: "BMW",
     name: "M5",
     releaseYear: 2017,
@@ -33,6 +37,7 @@ export const carColl = [
   },
   {
     id: 5,
+    type: "jeep",
     brand: "Tesla",
     name: "S",
     releaseYear: 2019,
@@ -42,3 +47,4 @@ export const carColl = [
 ];
 
 export const navbar = ["services", "catalogue", "about", "contact-us"];
+export const reg = /^(?=.*\d)(?=.*[A-Z]).{8,20}$/;

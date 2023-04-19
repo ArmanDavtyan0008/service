@@ -12,10 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import { Transition } from "./mui-style";
 
 const SignInDialog = ({ handleOpenSignIn, open, onClose, onSignUpOpen }) => {
   const [showPass, setShowPass] = useState(false);
@@ -26,7 +23,7 @@ const SignInDialog = ({ handleOpenSignIn, open, onClose, onSignUpOpen }) => {
   return (
     <>
       <Button variant="authentication" onClick={handleOpenSignIn}>
-        <Typography variant="h6">Sign In</Typography>
+        Sign In
       </Button>
       <Dialog
         open={open}

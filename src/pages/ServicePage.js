@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { carColl } from "../constants/common";
 import { Box, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
+import FilterServices from "../components/FilterServices";
 
 const ServicePage = () => {
   const [car, setCar] = useState([]);
+  const [filter, setFilter] = useState("all");
+
   useEffect(() => {
-    setCar(carColl);
-  }, []);
+    let typeCars = carColl.filter((car) => car.type === filter);
+    setCar(typeCars);
+    filter === "all" && setCar(carColl);
+  }, [filter]);
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <ImageList cols={3} gap={100}>
+      <FilterServices setFilter={setFilter} />
+      <ImageList cols={3} gap={100} sx={{ width: "90%" }}>
         {car.map((data) => (
-          <ImageListItem key={data.id} sx={{ width: 300 }}>
+          <ImageListItem key={data.id}>
             <img src={data.img} />
             <ImageListItemBar
               title={
